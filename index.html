@@ -245,27 +245,65 @@
     .hs-l { font-size: 12px; color: rgba(255,255,255,0.36); margin-top: 2px; }
 
     /* SLIDE 3: Gallery */
-    .gal-m { columns: 4; column-gap: 10px; margin-top: 48px; }
+    .gal-m {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 48px;
+    }
 
-    .gi { break-inside: avoid; margin-bottom: 10px; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; background: rgba(255,255,255,0.03); }
-    .gi img { width: 100%; display: block; transition: transform 0.5s ease; }
-    .gi:hover img { transform: scale(1.07); }
-    .gi-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(17,16,24,0.8) 0%, transparent 55%); opacity: 0; transition: opacity 0.35s ease; display: flex; align-items: flex-end; padding: 12px; }
+    .gi {
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      background: rgba(255,255,255,0.04);
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .gi.seen { opacity: 1; transform: none; }
+
+    .gi img {
+      width: 100%;
+      display: block;
+      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      aspect-ratio: 3/4;
+      object-fit: cover;
+    }
+    .gi.wide img { aspect-ratio: 3/2; }
+    .gi:hover img { transform: scale(1.08); }
+
+    .gi-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(17,16,24,0.85) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+    }
     .gi:hover .gi-overlay { opacity: 1; }
-    .gi-lbl { font-size: 10px; color: rgba(255,255,255,0.88); letter-spacing: 0.07em; }
+    .gi-lbl {
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
 
     /* Lightbox */
-    .lb { position: fixed; inset: 0; background: rgba(8,7,16,0.97); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(12px); }
+    .lb { position: fixed; inset: 0; background: rgba(8,7,16,0.97); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     .lb.open { opacity: 1; pointer-events: auto; }
-    .lb img { max-width: 88vw; max-height: 82vh; border-radius: 14px; object-fit: contain; transform: scale(0.88); transition: transform 0.45s ease; box-shadow: 0 40px 100px rgba(0,0,0,0.5); }
+    .lb img { max-width: 88vw; max-height: 82vh; border-radius: 14px; object-fit: contain; transform: scale(0.88); transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94); box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
     .lb.open img { transform: scale(1); }
-    .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-    .lb-btn:hover { background: rgba(255,107,157,0.25); }
-    .lb-prev { left: 24px; }
-    .lb-next { right: 24px; }
-    .lb-close { position: absolute; top: 20px; right: 28px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .lb-close:hover { background: rgba(255,107,157,0.2); }
-    .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+    .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); color: white; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .lb-btn:hover { background: rgba(255,107,157,0.3); border-color: rgba(255,107,157,0.4); }
+    .lb-prev { left: 28px; }
+    .lb-next { right: 28px; }
+    .lb-close { position: absolute; top: 20px; right: 28px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .lb-close:hover { background: rgba(255,107,157,0.2); border-color: rgba(255,107,157,0.3); }
+    .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: rgba(255,255,255,0.38); letter-spacing: 0.12em; }
 
     /* Responsive */
     @media (max-width: 960px) {
@@ -275,17 +313,19 @@
       .sk-grid { grid-template-columns: repeat(2, 1fr); }
       .honors-grid { grid-template-columns: 1fr; }
       .hs-wrap { display: flex; gap: 10px; flex-wrap: wrap; }
-      .gal-m { columns: 2; }
+      .gal-m { grid-template-columns: repeat(2, 1fr); }
       .nav { padding: 0 20px; }
       .pill { padding: 6px 14px; font-size: 12px; }
     }
 
     @media (max-width: 560px) {
       .sk-grid { grid-template-columns: 1fr; }
-      .gal-m { columns: 1; }
+      .gal-m { grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .about-name { font-size: 52px; }
       .ameta { grid-template-columns: repeat(2, 1fr); }
       .hd h2 { font-size: 36px; }
+      .lb-prev { left: 10px; }
+      .lb-next { right: 10px; }
     }
   </style>
 </head>
@@ -401,36 +441,35 @@
       <p>记录每一个发光瞬间</p>
     </div>
     <div class="gal-m">
-      
-      <div class="gi" onclick="openLb(1)"><img src="张琬宁_图片/766d236e.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(2)"><img src="张琬宁_图片/753382a8.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(3)"><img src="张琬宁_图片/1e96aff911d1fd8fac63ec381acb863a.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(4)"><img src="张琬宁_图片/35c5ea1174bf0d4de2d32ba5c218b6a5.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(5)"><img src="张琬宁_图片/8da19e84b8f68dba973d4a15e6c6b461.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(6)"><img src="张琬宁_图片/91d86432a52dc83ab779871b89595325.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(7)"><img src="张琬宁_图片/9bddd48a525501876b9604afdedbb6c9.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(8)"><img src="张琬宁_图片/d33f19b5357339693554c0d8f31a1fdb.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(9)"><img src="张琬宁_图片/e09eaea08fd8d4e6d751dd39638710b0.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(10)"><img src="张琬宁_图片/ec000bf9aca7f792a63427653228d1f2.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(11)"><img src="张琬宁_图片/cbadf65ab2d2b84285eada21b1741476.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(12)"><img src="张琬宁_图片/312054b00f8a0cb9a14616b1f7b27e2e.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(13)"><img src="张琬宁_图片/9b932a1a9e49c53b2f8d7619d6e6b1da.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(14)"><img src="张琬宁_图片/937e6d4a088f2e51b5236a0f93400126.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(15)"><img src="张琬宁_图片/3a939aca84985fd6aec41ad9797fa9ad.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(16)"><img src="张琬宁_图片/c30882fe14bd6322d7c26c232ac73536.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(17)"><img src="张琬宁_图片/c814df77c789c21c8ec44509671ea025.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(18)"><img src="张琬宁_图片/cfbaba7af4d889aba3132bc279232d60.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(19)"><img src="张琬宁_图片/b464e32c5e09538497110cd9ca0e65e8.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(20)"><img src="张琬宁_图片/f0c06c4c9e8d274ef7282f01a69a9780.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(21)"><img src="张琬宁_图片/47228a5eff26354cfd64bde0256efa29.jpg" alt=""><div class="gi-overlay"></div></div>
-      <div class="gi" onclick="openLb(22)"><img src="张琬宁_图片/a9aea772af7ceb7a90e9ac5450d88b63.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(1)"><img src="张琬宁_图片/766d236e.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(2)"><img src="张琬宁_图片/753382a8.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(3)"><img src="张琬宁_图片/1e96aff911d1fd8fac63ec381acb863a.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi wide" onclick="openLb(4)"><img src="张琬宁_图片/35c5ea1174bf0d4de2d32ba5c218b6a5.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(5)"><img src="张琬宁_图片/8da19e84b8f68dba973d4a15e6c6b461.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(6)"><img src="张琬宁_图片/91d86432a52dc83ab779871b89595325.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(7)"><img src="张琬宁_图片/9bddd48a525501876b9604afdedbb6c9.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(8)"><img src="张琬宁_图片/d33f19b5357339693554c0d8f31a1fdb.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(9)"><img src="张琬宁_图片/e09eaea08fd8d4e6d751dd39638710b0.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(10)"><img src="张琬宁_图片/ec000bf9aca7f792a63427653228d1f2.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(11)"><img src="张琬宁_图片/cbadf65ab2d2b84285eada21b1741476.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(12)"><img src="张琬宁_图片/312054b00f8a0cb9a14616b1f7b27e2e.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(13)"><img src="张琬宁_图片/9b932a1a9e49c53b2f8d7619d6e6b1da.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi wide" onclick="openLb(14)"><img src="张琬宁_图片/937e6d4a088f2e51b5236a0f93400126.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(15)"><img src="张琬宁_图片/3a939aca84985fd6aec41ad9797fa9ad.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(16)"><img src="张琬宁_图片/c30882fe14bd6322d7c26c232ac73536.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(17)"><img src="张琬宁_图片/c814df77c789c21c8ec44509671ea025.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(18)"><img src="张琬宁_图片/cfbaba7af4d889aba3132bc279232d60.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(19)"><img src="张琬宁_图片/b464e32c5e09538497110cd9ca0e65e8.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(20)"><img src="张琬宁_图片/f0c06c4c9e8d274ef7282f01a69a9780.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(21)"><img src="张琬宁_图片/47228a5eff26354cfd64bde0256efa29.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
+      <div class="gi" onclick="openLb(22)"><img src="张琬宁_图片/a9aea772af7ceb7a90e9ac5450d88b63.jpg" alt=""><div class="gi-overlay"><span class="gi-lbl">闪耀时刻</span></div></div>
     </div>
   </div>
 </div>
 
 <script>
   const imgs = [
-    '','张琬宁_图片/766d236e.jpg','张琬宁_图片/753382a8.jpg',
+    '张琬宁_图片/766d236e.jpg','张琬宁_图片/753382a8.jpg',
     '张琬宁_图片/1e96aff911d1fd8fac63ec381acb863a.jpg','张琬宁_图片/35c5ea1174bf0d4de2d32ba5c218b6a5.jpg',
     '张琬宁_图片/8da19e84b8f68dba973d4a15e6c6b461.jpg','张琬宁_图片/91d86432a52dc83ab779871b89595325.jpg',
     '张琬宁_图片/9bddd48a525501876b9604afdedbb6c9.jpg','张琬宁_图片/d33f19b5357339693554c0d8f31a1fdb.jpg',
@@ -449,6 +488,14 @@
     document.getElementById('sl-' + n).classList.add('on');
     document.querySelectorAll('.pill')[n].classList.add('on');
     window.scrollTo(0, 0);
+
+    if (n === 3) {
+      document.querySelectorAll('.gi').forEach((gi, i) => {
+        setTimeout(() => gi.classList.add('seen'), i * 55);
+      });
+    } else {
+      document.querySelectorAll('.gi').forEach(gi => gi.classList.remove('seen'));
+    }
   }
 
   document.addEventListener('keydown', e => {
