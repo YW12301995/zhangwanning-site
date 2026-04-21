@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>张琬宁 · 闪耀时刻</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: #111018;
+      color: #f2eef8;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: rgba(255, 107, 157, 0.3); }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(17, 16, 24, 0.9);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255,107,157,0.12);
+    }
+
+    .nav-brand { font-size: 18px; font-weight: 700; letter-spacing: 0.08em; color: #fff; }
+
+    .nav-pills {
+      display: flex;
+      gap: 4px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,107,157,0.15);
+      border-radius: 50px;
+      padding: 4px;
+    }
+
+    .pill {
+      padding: 7px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .pill:hover { color: rgba(255,255,255,0.9); background: rgba(255,107,157,0.08); }
+
+    .pill.on {
+      background: linear-gradient(135deg, #FF6B9D, #FF8FAB);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(255, 107, 157, 0.45);
+    }
+
+    /* ── Slides ── */
+    .slides { position: relative; }
+
+    .slide { display: none; animation: fadeIn 0.45s ease; }
+    .slide.on { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SLIDE 0: About */
+    .about-wrap {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .about-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .about-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.1;
+      filter: saturate(0.4) blur(3px);
+    }
+
+    .about-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(17,16,24,0.95) 0%, rgba(17,16,24,0.5) 50%, rgba(17,16,24,0.9) 100%);
+    }
+
+    .about-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 72px;
+      align-items: center;
+      padding: 96px 80px 60px;
+      max-width: 1140px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* 粉色渐变边框，静态不变 */
+    .photo-ring {
+      width: 100%;
+      border-radius: 20px;
+      padding: 3px;
+      background: linear-gradient(160deg, #FF6B9D 0%, #C471ED 40%, #8B5CF6 70%, #FF6B9D 100%);
+      background-size: 200% 200%;
+    }
+
+    .photo-ring img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: 17px;
+      display: block;
+    }
+
+    .about-kicker { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #FF8FAB; margin-bottom: 14px; font-weight: 500; }
+    .about-name { font-size: 80px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; color: #fff; margin-bottom: 4px; }
+    .about-name-en { font-size: 18px; font-weight: 300; color: rgba(255,255,255,0.38); letter-spacing: 0.22em; margin-bottom: 28px; }
+    .about-desc { font-size: 15px; line-height: 1.9; color: rgba(255,255,255,0.58); max-width: 480px; margin-bottom: 28px; }
+
+    .atags { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+    .atag { padding: 6px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; }
+    .atag:nth-child(1) { background: rgba(255,107,157,0.14); color: #FF8FAB; border: 1px solid rgba(255,107,157,0.25); }
+    .atag:nth-child(2) { background: rgba(196,113,237,0.12); color: #D4A8FF; border: 1px solid rgba(196,113,237,0.22); }
+    .atag:nth-child(3) { background: rgba(255,143,175,0.12); color: #FFADBB; border: 1px solid rgba(255,143,175,0.22); }
+    .atag:nth-child(4) { background: rgba(139,92,246,0.12); color: #B8A4FF; border: 1px solid rgba(139,92,246,0.22); }
+
+    .ameta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 480px; }
+    .amc { padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,107,157,0.1); }
+    .amc-l { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 3px; }
+    .amc-v { font-size: 16px; font-weight: 600; color: rgba(255,255,255,0.9); }
+
+    /* SLIDE 1: Skills */
+    .inner { padding: 100px 80px 60px; max-width: 1100px; margin: 0 auto; }
+
+    .hd h2 { font-size: 52px; font-weight: 800; letter-spacing: -0.02em; color: #fff; margin-bottom: 8px; }
+    .hd p { font-size: 15px; color: rgba(255,255,255,0.35); }
+
+    .sk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 48px; }
+
+    .sk {
+      padding: 28px 24px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,107,157,0.08);
+      transition: all 0.35s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sk::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+
+    .sk:nth-child(1)::before { background: linear-gradient(90deg, #FF6B9D, #FF8FAB); }
+    .sk:nth-child(2)::before { background: linear-gradient(90deg, #C471ED, #D4A8FF); }
+    .sk:nth-child(3)::before { background: linear-gradient(90deg, #FF8FAB, #FFADBB); }
+    .sk:nth-child(4)::before { background: linear-gradient(90deg, #8B5CF6, #B8A4FF); }
+    .sk:nth-child(5)::before { background: linear-gradient(90deg, #FF6B9D, #FF8FAB); }
+    .sk:nth-child(6)::before { background: linear-gradient(90deg, #C471ED, #D4A8FF); }
+
+    .sk:hover { background: rgba(255,107,157,0.06); transform: translateY(-4px); box-shadow: 0 16px 48px rgba(255,107,157,0.12); }
+    .sk:hover::before { transform: scaleX(1); }
+
+    .sk-icon { font-size: 28px; margin-bottom: 14px; }
+    .sk-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .sk-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+
+    /* SLIDE 2: Honors */
+    .honors-grid { display: grid; grid-template-columns: 1fr 260px; gap: 48px; align-items: start; margin-top: 48px; }
+
+    .tl { position: relative; padding-left: 36px; }
+    .tl::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, #FF6B9D, #C471ED, #8B5CF6, #FF8FAB); border-radius: 2px; }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 18px;
+      padding: 15px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,107,157,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .tl-item:hover { background: rgba(255,107,157,0.06); transform: translateX(4px); }
+
+    .tl-dot { position: absolute; left: -27px; top: 18px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #111018; }
+    .tl-item:nth-child(1) .tl-dot, .tl-item:nth-child(2) .tl-dot, .tl-item:nth-child(5) .tl-dot, .tl-item:nth-child(9) .tl-dot { background: #FF6B9D; }
+    .tl-item:nth-child(3) .tl-dot, .tl-item:nth-child(4) .tl-dot, .tl-item:nth-child(8) .tl-dot, .tl-item:nth-child(10) .tl-dot { background: #C471ED; }
+    .tl-item:nth-child(6) .tl-dot { background: #FF8FAB; }
+    .tl-item:nth-child(7) .tl-dot { background: #8B5CF6; }
+
+    .tl-date { font-size: 11px; font-weight: 600; color: #FF8FAB; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .tl-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.88); margin-bottom: 3px; }
+    .tl-desc { font-size: 12px; color: rgba(255,255,255,0.36); line-height: 1.6; }
+
+    .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .tag { padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; }
+    .tag.gold { background: rgba(255,143,175,0.14); color: #FFADBB; }
+    .tag.star { background: rgba(255,107,157,0.14); color: #FF8FAB; }
+    .tag.vio { background: rgba(139,92,246,0.13); color: #B8A4FF; }
+
+    .hs { display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,107,157,0.08); transition: all 0.3s ease; }
+    .hs:hover { background: rgba(255,107,157,0.06); transform: translateX(-4px); }
+    .hs-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .hs:nth-child(1) .hs-icon { background: rgba(255,143,175,0.14); }
+    .hs:nth-child(2) .hs-icon { background: rgba(255,107,157,0.14); }
+    .hs:nth-child(3) .hs-icon { background: rgba(196,113,237,0.12); }
+    .hs:nth-child(4) .hs-icon { background: rgba(139,92,246,0.12); }
+    .hs-n { font-size: 40px; font-weight: 800; line-height: 1; }
+    .hs:nth-child(1) .hs-n { color: #FFADBB; }
+    .hs:nth-child(2) .hs-n { color: #FF6B9D; }
+    .hs:nth-child(3) .hs-n { color: #C471ED; }
+    .hs:nth-child(4) .hs-n { color: #8B5CF6; }
+    .hs-l { font-size: 12px; color: rgba(255,255,255,0.36); margin-top: 2px; }
+
+    /* SLIDE 3: Gallery */
+    .gal-m { columns: 4; column-gap: 10px; margin-top: 48px; }
+
+    .gi { break-inside: avoid; margin-bottom: 10px; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; background: rgba(255,255,255,0.03); }
+    .gi img { width: 100%; display: block; transition: transform 0.5s ease; }
+    .gi:hover img { transform: scale(1.07); }
+    .gi-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(17,16,24,0.8) 0%, transparent 55%); opacity: 0; transition: opacity 0.35s ease; display: flex; align-items: flex-end; padding: 12px; }
+    .gi:hover .gi-overlay { opacity: 1; }
+    .gi-lbl { font-size: 10px; color: rgba(255,255,255,0.88); letter-spacing: 0.07em; }
+
+    /* Lightbox */
+    .lb { position: fixed; inset: 0; background: rgba(8,7,16,0.97); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(12px); }
+    .lb.open { opacity: 1; pointer-events: auto; }
+    .lb img { max-width: 88vw; max-height: 82vh; border-radius: 14px; object-fit: contain; transform: scale(0.88); transition: transform 0.45s ease; box-shadow: 0 40px 100px rgba(0,0,0,0.5); }
+    .lb.open img { transform: scale(1); }
+    .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .lb-btn:hover { background: rgba(255,107,157,0.25); }
+    .lb-prev { left: 24px; }
+    .lb-next { right: 24px; }
+    .lb-close { position: absolute; top: 20px; right: 28px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .lb-close:hover { background: rgba(255,107,157,0.2); }
+    .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .about-inner { grid-template-columns: 1fr; padding: 100px 32px 48px; gap: 36px; }
+      .photo-ring { max-width: 260px; }
+      .inner { padding: 80px 32px 48px; }
+      .sk-grid { grid-template-columns: repeat(2, 1fr); }
+      .honors-grid { grid-template-columns: 1fr; }
+      .hs-wrap { display: flex; gap: 10px; flex-wrap: wrap; }
+      .gal-m { columns: 2; }
+      .nav { padding: 0 20px; }
+      .pill { padding: 6px 14px; font-size: 12px; }
+    }
+
+    @media (max-width: 560px) {
+      .sk-grid { grid-template-columns: 1fr; }
+      .gal-m { columns: 1; }
+      .about-name { font-size: 52px; }
+      .ameta { grid-template-columns: repeat(2, 1fr); }
+      .hd h2 { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <button class="lb-btn lb-prev" onclick="lbNav(-1)">&#8249;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-btn lb-next" onclick="lbNav(1)">&#8250;</button>
+  <button class="lb-close" onclick="lbClose()">&#x2715;</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-brand">张琬宁</div>
+  <div class="nav-pills">
+    <button class="pill on" onclick="show(0)">关于我</button>
+    <button class="pill" onclick="show(1)">特长技能</button>
+    <button class="pill" onclick="show(2)">荣誉历程</button>
+    <button class="pill" onclick="show(3)">闪耀时刻</button>
+  </div>
+</nav>
+
+<!-- Slide 0: About -->
+<div class="slide on" id="sl-0">
+  <div class="about-wrap">
+    <div class="about-bg">
+      <img src="张琬宁_图片/766d236e.jpg" alt="">
+    </div>
+    <div class="about-inner">
+      <div class="photo-ring">
+        <img src="张琬宁_图片/766d236e.jpg" alt="张琬宁">
+      </div>
+      <div>
+        <div class="about-kicker">特邀小主持 · 少儿才艺档案</div>
+        <div class="about-name">张琬宁</div>
+        <div class="about-name-en">Zhang Wan Ning</div>
+        <p class="about-desc">年仅6岁的多才多艺小演员，镜头感敏锐，舞台感染力极强。在表演、舞蹈、声乐、模特、主持朗诵、绘画等多个领域同步发展，从省赛金奖一路走到央视春晚舞台。</p>
+        <div class="atags">
+          <span class="atag">国赛金奖</span>
+          <span class="atag">央视春晚</span>
+          <span class="atag">省赛金奖</span>
+          <span class="atag">多领域进阶</span>
+        </div>
+        <div class="ameta">
+          <div class="amc"><div class="amc-l">性别</div><div class="amc-v">女</div></div>
+          <div class="amc"><div class="amc-l">出生</div><div class="amc-v">2019.11</div></div>
+          <div class="amc"><div class="amc-l">身高</div><div class="amc-v">125cm</div></div>
+          <div class="amc"><div class="amc-l">体重</div><div class="amc-v">52斤</div></div>
+          <div class="amc"><div class="amc-l">现居</div><div class="amc-v">安徽六安</div></div>
+          <div class="amc"><div class="amc-l">擅长</div><div class="amc-v">6+领域</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 1: Skills -->
+<div class="slide" id="sl-1">
+  <div class="inner">
+    <div class="hd">
+      <h2>特长技能</h2>
+      <p>六大领域同步发展，综合素养全面</p>
+    </div>
+    <div class="sk-grid">
+      <div class="sk"><div class="sk-icon">&#x1F3AC;</div><div class="sk-name">表演</div><div class="sk-desc">镜头感敏锐，台词表达清晰流畅，情绪把控精准自然，能快速适应剧组拍摄节奏，展现出超越年龄的表演功底。</div></div>
+      <div class="sk"><div class="sk-icon">&#x1F483;</div><div class="sk-name">舞蹈</div><div class="sk-desc">擅长民族舞，动作标准优美，兼具柔韧性与表现力，基础扎实，多次考级通过。</div></div>
+      <div class="sk"><div class="sk-icon">&#x1F3A4;</div><div class="sk-name">声乐</div><div class="sk-desc">擅长独唱，音准精准，音色清亮，舞台表现力极佳，能快速调动现场氛围。</div></div>
+      <div class="sk"><div class="sk-icon">&#x1F4F8;</div><div class="sk-name">模特</div><div class="sk-desc">具备专业平面拍摄、造型摆拍能力，镜头表现力强，能精准诠释不同风格造型。</div></div>
+      <div class="sk"><div class="sk-icon">&#x1F3A5;</div><div class="sk-name">主持 · 朗诵</div><div class="sk-desc">语言表达流畅有感染力，精通主持与朗诵舞台艺术，社会艺术水平考级朗诵1-5级全部通过。</div></div>
+      <div class="sk"><div class="sk-icon">&#x1F3A8;</div><div class="sk-name">绘画</div><div class="sk-desc">擅长绘画，具备扎实的美术基础，综合素养全面，市级书画大赛三等奖获得者。</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: Honors -->
+<div class="slide" id="sl-2">
+  <div class="inner">
+    <div class="hd">
+      <h2>荣誉历程</h2>
+      <p>从地方舞台到央视春晚，每一步都是闪耀的印记</p>
+    </div>
+    <div class="honors-grid">
+      <div class="tl">
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2023年11月</div><div class="tl-title">社会艺术水平考级 · 朗诵专业 1 级</div><div class="tl-desc">展现早期语言天赋与学习能力</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2024年6月</div><div class="tl-title">社会艺术水平考级 · 朗诵专业 2 级</div><div class="tl-desc">语言功底扎实，能力稳步提升</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2024年8月</div><div class="tl-title">第十届花样少年语言艺术国赛</div><div class="tl-desc">上海市上海国际会议中心，朗诵《老鼠说大话》</div><div class="tag-row"><span class="tag gold">国赛金奖</span></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2024年9月</div><div class="tl-title">第十届花样少年语言艺术 · 合肥省赛</div><div class="tl-desc">朗诵《老鼠说大话》</div><div class="tag-row"><span class="tag gold">省赛金奖</span><span class="tag star">人气先锋奖</span></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2024年12月</div><div class="tl-title">社会艺术水平考级 · 朗诵专业 3 级</div><div class="tl-desc">持续深耕语言领域，专业能力持续进阶</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2025年2月</div><div class="tl-title">2025年安徽少儿新春联欢晚会</div><div class="tl-desc">表演《蛇年贺新春》</div><div class="tag-row"><span class="tag gold">晚会金奖</span></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2025年6月</div><div class="tl-title">六安市关工委 · 市直第13届书画大赛</div><div class="tl-desc">"党是阳光我是苗"少幼儿书画大赛</div><div class="tag-row"><span class="tag vio">三等奖</span></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2025年9月</div><div class="tl-title">中国舞考级 2 级</div><div class="tl-desc">舞蹈领域持续突破，基础愈发扎实</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2025年12月</div><div class="tl-title">多项考级同步通过</div><div class="tl-desc">朗诵4级、5级；中国美术学院社会艺术考级3级</div><div class="tag-row"><span class="tag star">多领域同步进阶</span></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2026年2月</div><div class="tl-title">央视春晚 · 少年中国 2026全国少儿春晚</div><div class="tl-desc">北京市星光大道登台表演</div><div class="tag-row"><span class="tag star">优秀小演员</span></div></div>
+      </div>
+      <div class="hs-wrap" style="position:sticky;top:80px;display:flex;flex-direction:column;gap:12px;">
+        <div class="hs"><div class="hs-icon">&#x1F3C6;</div><div><div class="hs-n">3</div><div class="hs-l">金奖</div></div></div>
+        <div class="hs"><div class="hs-icon">&#x2B50;</div><div><div class="hs-n">10+</div><div class="hs-l">荣誉记录</div></div></div>
+        <div class="hs"><div class="hs-icon">&#x1F3AD;</div><div><div class="hs-n">6</div><div class="hs-l">擅长领域</div></div></div>
+        <div class="hs"><div class="hs-icon">&#x1F3FA;</div><div><div class="hs-n">1</div><div class="hs-l">国家级舞台</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Gallery -->
+<div class="slide" id="sl-3">
+  <div class="inner">
+    <div class="hd">
+      <h2>闪耀时刻</h2>
+      <p>记录每一个发光瞬间</p>
+    </div>
+    <div class="gal-m">
+      <div class="gi" onclick="openLb(0)"><img src="张琬宁_图片/5bb55b05.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(1)"><img src="张琬宁_图片/766d236e.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(2)"><img src="张琬宁_图片/753382a8.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(3)"><img src="张琬宁_图片/1e96aff911d1fd8fac63ec381acb863a.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(4)"><img src="张琬宁_图片/35c5ea1174bf0d4de2d32ba5c218b6a5.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(5)"><img src="张琬宁_图片/8da19e84b8f68dba973d4a15e6c6b461.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(6)"><img src="张琬宁_图片/91d86432a52dc83ab779871b89595325.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(7)"><img src="张琬宁_图片/9bddd48a525501876b9604afdedbb6c9.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(8)"><img src="张琬宁_图片/d33f19b5357339693554c0d8f31a1fdb.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(9)"><img src="张琬宁_图片/e09eaea08fd8d4e6d751dd39638710b0.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(10)"><img src="张琬宁_图片/ec000bf9aca7f792a63427653228d1f2.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(11)"><img src="张琬宁_图片/cbadf65ab2d2b84285eada21b1741476.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(12)"><img src="张琬宁_图片/312054b00f8a0cb9a14616b1f7b27e2e.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(13)"><img src="张琬宁_图片/9b932a1a9e49c53b2f8d7619d6e6b1da.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(14)"><img src="张琬宁_图片/937e6d4a088f2e51b5236a0f93400126.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(15)"><img src="张琬宁_图片/3a939aca84985fd6aec41ad9797fa9ad.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(16)"><img src="张琬宁_图片/c30882fe14bd6322d7c26c232ac73536.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(17)"><img src="张琬宁_图片/c814df77c789c21c8ec44509671ea025.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(18)"><img src="张琬宁_图片/cfbaba7af4d889aba3132bc279232d60.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(19)"><img src="张琬宁_图片/b464e32c5e09538497110cd9ca0e65e8.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(20)"><img src="张琬宁_图片/f0c06c4c9e8d274ef7282f01a69a9780.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(21)"><img src="张琬宁_图片/47228a5eff26354cfd64bde0256efa29.jpg" alt=""><div class="gi-overlay"></div></div>
+      <div class="gi" onclick="openLb(22)"><img src="张琬宁_图片/a9aea772af7ceb7a90e9ac5450d88b63.jpg" alt=""><div class="gi-overlay"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const imgs = [
+    '张琬宁_图片/5bb55b05.jpg','张琬宁_图片/766d236e.jpg','张琬宁_图片/753382a8.jpg',
+    '张琬宁_图片/1e96aff911d1fd8fac63ec381acb863a.jpg','张琬宁_图片/35c5ea1174bf0d4de2d32ba5c218b6a5.jpg',
+    '张琬宁_图片/8da19e84b8f68dba973d4a15e6c6b461.jpg','张琬宁_图片/91d86432a52dc83ab779871b89595325.jpg',
+    '张琬宁_图片/9bddd48a525501876b9604afdedbb6c9.jpg','张琬宁_图片/d33f19b5357339693554c0d8f31a1fdb.jpg',
+    '张琬宁_图片/e09eaea08fd8d4e6d751dd39638710b0.jpg','张琬宁_图片/ec000bf9aca7f792a63427653228d1f2.jpg',
+    '张琬宁_图片/cbadf65ab2d2b84285eada21b1741476.jpg','张琬宁_图片/312054b00f8a0cb9a14616b1f7b27e2e.jpg',
+    '张琬宁_图片/9b932a1a9e49c53b2f8d7619d6e6b1da.jpg','张琬宁_图片/937e6d4a088f2e51b5236a0f93400126.jpg',
+    '张琬宁_图片/3a939aca84985fd6aec41ad9797fa9ad.jpg','张琬宁_图片/c30882fe14bd6322d7c26c232ac73536.jpg',
+    '张琬宁_图片/c814df77c789c21c8ec44509671ea025.jpg','张琬宁_图片/cfbaba7af4d889aba3132bc279232d60.jpg',
+    '张琬宁_图片/b464e32c5e09538497110cd9ca0e65e8.jpg','张琬宁_图片/f0c06c4c9e8d274ef7282f01a69a9780.jpg',
+    '张琬宁_图片/47228a5eff26354cfd64bde0256efa29.jpg','张琬宁_图片/a9aea772af7ceb7a90e9ac5450d88b63.jpg'
+  ];
+
+  function show(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('on'));
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+    document.getElementById('sl-' + n).classList.add('on');
+    document.querySelectorAll('.pill')[n].classList.add('on');
+    window.scrollTo(0, 0);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') lbClose();
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft') lbNav(-1);
+  });
+
+  let lbI = 0;
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lbImg');
+  const lbCnt = document.getElementById('lbCounter');
+
+  function openLb(i) { lbI = i; lbImg.src = imgs[i]; lbCnt.textContent = (i+1) + ' / ' + imgs.length; lb.classList.add('open'); }
+  function lbClose() { lb.classList.remove('open'); }
+  function lbNav(d) { lbI = (lbI+d+imgs.length)%imgs.length; lbImg.src = imgs[lbI]; lbCnt.textContent = (lbI+1) + ' / ' + imgs.length; }
+  lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
+</script>
+
+</body>
+</html>
