@@ -1,0 +1,17 @@
+name: Deploy to Cloudflare Pages
+
+  on:
+    push:
+      branches: [main]
+    workflow_dispatch:
+
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: cloudflare/pages-action@v1
+          with:
+            apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            accountId: 0c67b1c102a54b9a2dd9db828c749284
+            projectName: zhangwanning-site
